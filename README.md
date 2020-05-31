@@ -18,7 +18,7 @@ Per Click auf jedes Gebäude oder eine beliebige Fläche wird eine Info eingeble
 
 Die Live-Version des Projekts folgt in den kommenden Tagen.
 
-(Beim Clonen vom Repository müsste ein eigener MongoDB Zugang im .env File angelegt werden.) 
+Beim Clonen vom Repository müsste ein eigener MongoDB Zugang im .env File angelegt werden.
 ---
 
 
