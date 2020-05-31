@@ -16,11 +16,7 @@ Per Click auf jedes Gebäude oder eine beliebige Fläche wird eine Info eingeble
 ---
 ## Live-Version
 
-Die Live-Version des Projekts kann [hier](https://www.freiburg.de/pb/,Lde/205243.html) angesehen werden. Die [Diskussionsseite]() ist auch einsehbar.
-
-```bash
-kommt noch :D
-```
+Die Live-Version des Projekts folgt in den kommenden Tagen.
 
 (Beim Clonen vom Repository müsste ein eigener MongoDB Zugang im .env File angelegt werden.) 
 ---
