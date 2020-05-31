@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeinDietenbach</title>
+
+  <!-- für favion -->
+  <link rel="apple-touch-icon" sizes="180x180" href="./images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./images/favicon/favicon-16x16.png">
+  <link rel="manifest" href="./images/favicon/site.webmanifest">
+  <link rel="mask-icon" href="./images/favicon/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <!-- ende Favion -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+    crossorigin=""></script>
+  <link rel="stylesheet" href="./stylesheets/run.css">
+  <!-- Lädt OSMBuildings -->
+  <link href="./stylesheets/osmbuildings.css" rel="stylesheet">
+  <script src="./javascripts/osmbuildings_4.js"></script>
+</head>
+
+<body>
+
+  <!-- für leaflet und osmbuildings -->
+  <div id="map" class="map"></div>
+
+  <!-- Label test -->
+  <!-- <div id="label"> <a href="https://github.com/curryforce/dietenbach-beta"><img src="./images/GitHub-Mark-64px.png"></a> </div> -->
+
+
+
+
+
+  <!-- fuer schattenkontrolle-->
+  <div class="time-control">Tageszeitregler
+    <input id="date" type="range" min="1" max="365" step="1"><label for="date"></label>
+    <input id="time" type="range" min="0" max="23" step="1"><label for="time"></label>
+  </div>
+
+
+  <!-- fuer Frosch / Vogelsperspektive  -->
+  <div>
+    <button class="sideview"><img src="./images/sideview.png"></button>
+    <button class="bird"><img src="./images/falcon.png"></button>
+  </div>
+
+  <div>
+    <button class="zoom-in">+</button>
+    <button class="zoom-out">&#8722;</button>
+  </div>
+
+  <div class="menu-seite">
+    <h4>Locations</h4>
+    <input class="kita" type="checkbox" name="kitas"> <label for="kitas">Kitas</label><br>
+    <input class="laden" type="checkbox" name="laden"> <label for="laden">Läden</label><br>
+    <input class="schulen" type="checkbox" name="schulen"> <label for="schulen">Schulen</label><br>
+    <input class="gastro" type="checkbox" name="gastro"> <label for="gastro">Gastro</label><br>
+    <input class="spielplatz" type="checkbox" name="spielplatz"> <label for="spielplatz">Spielplatz</label><br>
+    <input class="sport" type="checkbox" name="sport"> <label for="sport">Sport</label><br>
+    <input class="parkplatz" type="checkbox" name="parkplatz"> <label for="parkplatz">Parkplatz</label><br>
+    <h4>Feedbacks</h4>
+    <!-- noch aufteilen in 3 Kategorien  -->
+    <input class="feedbacks" type="checkbox" name="feedback"> <label for="feedback">Feedbacks anzeigen</label><br>
+  </div>
+
+
+
+  <!-- Formbox für Feedback -->
+  <div class=meineInfo style="visibility: hidden;">
+    <button class="close">✖</button>
+    <h4 class="InfoTitel">Was ist hier?</h4>
+    <div class="typus"></div>
+    <div class="zusatz"></div>
+    <form class="meinForm" name="tollesForm" action="/add">
+      <label for="stimmung"> Das stimmt mich:</label>
+      <fieldset id="stimmung" class="stimmung">
+        <input type="radio" id="mc" name="test" value="positiv">
+        <label for="mc"> Positiv 😀 </label>
+        <input type="radio" id="vi" name="test" value="neutral">
+        <label for="vi"> Neutral 😐</label>
+        <input type="radio" id="ae" name="test" value="negativ">
+        <label for="ae"> Negativ 😒</label>
+      </fieldset>
+      <label for="dropdown"> Feedback-Art wählen:</label>
+      <br>
+      <!-- <fieldset id="dropForm" class="dropForm"> -->
+      <select id="dropdown" name="dropdown" , class="dropdown">
+        <option value="leer" name="drop" selected>--Auswählen--</option>
+        <option value="Idee" name="drop">Idee</option>
+        <option value="Kritik" name="drop">Kritik</option>
+        <option value="Frage" name="drop">Frage</option>
+      </select>
+      <!-- </fieldset> -->
+      <div class="keineDopplung"></div>
+      <fieldset class="freifeld">
+        <textarea class="InputField" placeholder="Dein Vorschlag" tabindex="5" maxlength="150"
+          name="suggestion_text"></textarea>
+      </fieldset>
+      <fieldset>
+        <button class="buttonEins" type="button">Bestätigen</button>
+      </fieldset>
+    </form>
+
+    <!-- hier soll Vorhandener Kommentar für Haus-ID eingefügt werden -->
+
+    <div class="commentHeader">
+      <h3>Vorhandene Kommentare:</h3>
+    </div>
+    <div class="feedback-server">
+      <ul class="feedback-list"></ul>
+    </div>
+
+  </div>
+
+
+
+</body>
+<script src="./javascripts/main.js"></script>
+
+</html>

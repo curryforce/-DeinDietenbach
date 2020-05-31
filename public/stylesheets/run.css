@@ -1,0 +1,485 @@
+/* macht karte fullscreen im Browser */
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,600);
+
+body, button { margin:0; padding:0; font:400 16px/16px "Open Sans", Helvetica, Arial, sans-serif;}
+#map { position: absolute; top:0; bottom:0; right:0; left:0; }
+
+
+/* zeit */
+.time-control {
+  left: 10px;
+  bottom: 10px;
+  font-weight: bolder;
+  position: absolute;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid #999999;
+  border-radius: 3px;
+  box-shadow: 1px 1px 2px #000000;
+  vertical-align: middle;
+  font-size: 14px;
+  padding: 8px 12px;
+}
+
+
+/*  */
+/* Buttons */
+/* allgemein */
+.bird {
+  position: absolute;
+  display: block;
+  max-height: 50px;
+  left: 340px;
+  bottom: 10px;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid #999999;
+  border-radius: 3px;
+  box-shadow: 1px 1px 2px #000000;
+  padding: 8px 2px;
+  padding-top: 0px;
+}
+
+/* seitenview */
+.sideview {
+  position: absolute;
+  display: block;
+  background-size: 30%;
+  height: 50px;  
+  width: 50px;
+  left: 410px;
+  bottom: 10px;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid #999999;
+  border-radius: 3px;
+  box-shadow: 1px 1px 2px #000000;
+  padding: 0px 2px;
+}
+
+.sideview img, .quiz img {
+  height: 33px;  
+  width: 33px;
+}
+
+
+/* zoom */
+.zoom-in {
+  position: absolute;
+  display: block;
+  font-weight: bolder;
+  width: 40px;
+  width: 40px;
+  left: 10px;
+  top: 10px;
+  /* bottom: 20px; */
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid #999999;
+  border-radius: 3px;
+  box-shadow: 1px 1px 2px #000000;
+  font-size: 14px;
+  padding: 8px 2px;
+}
+
+.zoom-out {
+  position: absolute;
+  display: block;
+  font-weight: bolder;
+  width: 40px;
+  width: 40px;
+  left: 10px;
+  top: 50px;
+  /* bottom: 20px; */
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid #999999;
+  border-radius: 3px;
+  box-shadow: 1px 1px 2px #000000;
+  font-size: 14px;
+  padding: 8px 2px;
+}
+
+.Box-header {
+z-index: 9999;
+
+}
+
+
+/* größe von Quizbutton */
+.quiz{
+  position: absolute;
+  display: block;
+  font-weight: bolder;
+  left: 470px;
+  bottom: 10px;
+  height: 50px;
+  width: 50px;
+  padding: 0px 2px;
+}
+
+
+.stimmung, .freifeld, .buttonEins  {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid #999999;
+  border-radius: 3px;
+  box-shadow: 1px 1px 2px #000000;
+}
+
+
+/* zoom */
+.zoom-in {
+  width: 40px;
+  width: 40px;
+  left: 10px;
+  top: 10px;
+  font-size: 14px;
+  padding: 8px 2px;
+}
+
+/* zoom out button */
+.zoom-out {
+  position: absolute;
+  display: block;
+  font-weight: bolder;
+  width: 40px;
+  width: 40px;
+  left: 10px;
+  top: 50px;
+  padding: 8px 2px;
+}
+
+.menu-seite h4{
+  margin: 0;
+  font-weight: bolder;;
+  font-size: larger;
+  text-decoration: underline;
+  margin-bottom: 10px;
+  margin-left: 4px;
+  top: 0; 
+}
+
+
+.menu-seite h4:nth-of-type(2){
+margin-top: 5px;
+}
+
+
+.infoTitel {
+  font-weight: 1000;
+  font-size: 16;
+  margin: 0;
+  padding: 0;
+}
+
+
+.menu-seite {
+  position: absolute;
+  display: block;
+  font-weight: bolder;
+  width: 100px;
+  height: 240px;
+  right: 10px;
+  top: 10px;
+  /* bottom: 20px; */
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid #999999;
+  border-radius: 3px;
+  box-shadow: 1px 1px 2px #000000;
+  font-size: 14px;
+  padding: 8px 2px;
+}
+
+
+
+
+
+/* style von info-auswahl */
+
+.meineInfo div, label, .buttonEins {
+  font-size: 14px;
+}
+
+.meineInfo {
+  position: absolute;
+  display: block;
+  /* width: 200px; */
+  /* height: 100px; */
+  width: 270px;
+  height: 470px;
+  right: 10px;
+  top: 180px;
+  /* für textfluss */
+  clear: both;
+  /* bottom: 20px; */
+  z-index: 1000;
+  background: rgba(255, 255, 255, 1);
+  border: 1px solid #999999;
+  border-radius: 3px;
+  box-shadow: 1px 1px 2px #000000;
+  padding: 8px 7px;
+  padding-left: 10px;
+}
+
+
+.close {
+  margin: 0;
+  padding: 0;
+  float: right;
+  background: rgba(255, 255, 255, 0.8);
+
+}
+
+/* Like /dislike buttons  */
+.feedback-list{
+  width: inherit;
+  right: 10px;
+  clear: both;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid #999999;
+  border-radius: 3px;
+  box-shadow: 1px 1px 2px #000000;
+  list-style-type: none;
+  padding: 10px 20px;
+  display: inline-block;
+}
+
+.feedback-list{
+  list-style: none;
+  display: contents;
+}
+
+
+.feedback-list li{
+  /* kommt koch */
+  padding: 10px;
+  min-height: 130px;
+  max-height: 180px;
+  min-width: 100px;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-gap: 5px;
+  border: 1px solid black ;
+  text-indent: 4px;
+  background: rgba(255, 255, 255, 1);
+}
+
+
+.feedback-list button{
+  /* kommt koch */
+  display: inline-block;
+  max-height: 25.5px;
+  max-width: 70px;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+
+.commentHeader{
+  border-radius: 3px;
+  overflow:scroll;
+  max-height: 300px;
+}
+
+
+.kommentarDatum {
+  display: grid;
+  grid-auto-columns: max-content;
+  margin-left: 80px;
+  margin-top: -10px;
+}
+
+.close{
+  margin-left: 175px;
+  top: 5px;
+  right: 5px;
+}
+
+
+.sv-container-modern{
+  position: absolute;
+  display: inline-block;
+  font-weight: bolder;
+  width: 300px;
+  height: 300px;
+  top: 80px;
+  left: 600px;
+  z-index: 1001;
+  font-size: 1em;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.sv-container-modern__title h3 {
+  font-size: 1em;
+}
+
+.sv-container-modern, .sv-question,  .sv-progress, .sv-body__page {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid #999999;
+  border-radius: 3px;
+  box-shadow: 1px 1px 2px #000000;
+
+}
+
+
+/* style für feedback box  */
+.container {
+	max-width:400px;
+	width:100%;
+	margin:0;
+  right: 10px;
+  position:relative;
+  z-index: 1000;
+}
+
+.InputField textarea, #buttonEins {
+   font:400 16px/16px "Open Sans", Helvetica, Arial, sans-serif;
+   }
+
+
+ .InputField {
+  max-width:206px;
+  min-width: 230px;
+  max-height: 69px;
+  min-height: 40px;
+  padding: 10px;
+}
+
+#sugesstion_box form {
+  margin-left: 0px;
+}
+
+
+/* style für radiobutton also Smileys  */
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+
+.meinForm input {
+display: block;
+  } 
+
+  .meinForm label {
+    display: inline-block;
+    /* soll linebreak verhindern */
+    white-space:nowrap;
+    text-align: right;
+    width: 60px;
+
+      }
+
+
+/* fuer label über karte  */
+#label {
+  width:30px;
+  height:10px;
+  position:absolute;
+  z-Index:10;
+  border:3px solid red;
+  background-color: wheat;
+}
+
+
+
+
+
+
+#suggestion_box {
+	background:inherit;
+  /* margin:50px 0; */
+  max-width:206px;
+  width:100%;
+  margin-left: 5px;
+  right: 10px;
+	/* position:relative; */
+}
+
+
+fieldset {
+	border: medium none !important;
+	margin: 0 0 10px;
+	min-width: 100%;
+  padding: 0;
+  margin-top: 10px;
+	width: 100%;
+}
+
+#suggestion_box textarea {
+	width:90%;
+	border:1px solid #CCC;
+	background:#FFF;
+	margin:0 0 5px;
+	padding:10px;
+}
+
+#suggestion_box textarea:hover {
+	-webkit-transition:border-color 0.3s ease-in-out;
+	-moz-transition:border-color 0.3s ease-in-out;
+	transition:border-color 0.3s ease-in-out;
+	border:1px solid #AAA;
+}
+
+#suggestion_box button[type="submit"] {
+	cursor:pointer;
+	width:100%;
+	border:none;
+	background:black;
+	color:#FFF;
+	margin:0 0 5px;
+  padding-left: 25px;
+	font-size:15px;
+}
+
+#suggestion_box button:hover {
+	-webkit-transition:background 0.3s ease-in-out;
+	-moz-transition:background 0.3s ease-in-out;
+	transition:background-color 0.3s ease-in-out;
+}
+
+#suggestion_box button:active { box-shadow:inset 0 1px 3px rgba(0, 0, 0, 0.5); }
+
+#suggestion_box input:focus, #suggestion_box textarea:focus {
+	outline:0;
+	border:1px solid #999;
+}
+::-webkit-input-placeholder {
+ color: whitesmoke;
+}
+:-moz-placeholder {
+ color:whitesmoke;
+}
+::-moz-placeholder {
+  color:whitesmoke;
+}
+:-ms-input-placeholder {
+  color:whitesmoke;
+}
+
+
+
+
+@media only screen and (max-width: 550px) {
+  .bird {
+    left: 10px;
+    bottom: 70px;
+  }
+  .sideview{
+    left: 10px;
+    bottom: 130px;
+  }
+
+  .meineInfo{
+    left: 65px;
+    top: 10px;
+  }
+
+
+}
+
+
+
