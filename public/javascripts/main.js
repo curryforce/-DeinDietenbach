@@ -3,7 +3,6 @@
 //
 
 // Icon Styles
-//1 allgm- style ggf. spezifische danach icons DRANBINDEN
 let iconStyle = L.Icon.extend({
     options: {
         iconSize: [45, 20],
@@ -28,16 +27,6 @@ let meineFARBEN = {
     feedback: [0, 4, 255]
 }
 
-
-
-
-
-
-//Grund für Falsche Darstellung WAR PROJEKTION
-// d.h. in QGIS alle Files in Projektion 4326 EXPORTIEREN
-
-
-
 //Für Schattenfunktion
 let osmb;
 
@@ -45,14 +34,6 @@ let osmb;
 //soll bereits eingetragenen pos/neg ids speichern
 let feedbackCollector = [];
 
-
-//Ausgangsposition bei Kartenstarrrt
-// ((über Dietenbach))
-//tilt --> 45
-//zoom --> 17.20
-// {longitude: 7.7955168631866485, latitude: 48.005692082548244}
-//rotation = 0
-// disabled = true --> kein Userinput
 
 //Button-Funktionaltäten ----------------------------------
 //Funktion für Vogelperspektive
@@ -87,8 +68,6 @@ function startPosition() {
 const seitenPerspektive = document.querySelector(".sideview");
 seitenPerspektive.addEventListener("click", startPosition);
 
-
-
 //Für Zoom-butons
 const zoomIN = document.querySelector(".zoom-in");
 zoomIN.addEventListener("click", function () {
@@ -98,7 +77,6 @@ zoomIN.addEventListener("click", function () {
 });
 
 
-
 const zoomOUT = document.querySelector(".zoom-out");
 zoomOUT.addEventListener("click", function () {
     let zoomStufe = osmb.getZoom();
@@ -106,12 +84,14 @@ zoomOUT.addEventListener("click", function () {
     osmb.setZoom(meinZoom);
 })
 
+function disableElement (x, input) {
+    document.querySelector(x).disabled = input;
+};
+
 
 //für Haus-ID in Auswahl
 const selected_HOUSE = [];
-
 //Hauptfunktion für Laden geojson / karte
-
 async function geoJSONDAZU() {
 
     osmb = new OSMBuildings({
@@ -140,8 +120,8 @@ async function geoJSONDAZU() {
 
     // Datum 3.05.2020 8:30 Ausgangszeit für Schatten
     osmb.setDate(new Date(2020, 5, 3, 8, 30));
-    //machES returned meineORTE
-    machES();
+    //addBuildingsGEOJSON fügt GEOJSON hinzu und Array "meineorte" für Marker 
+    addBuildingsGEOJSON();
     // marker sammlungen in array packt, direkt angeschlossen werden kann
     console.log(osmb);
 
@@ -152,7 +132,6 @@ async function geoJSONDAZU() {
     //Highlight und Marker dazu
     //RiesenFunktion beginnt -->mit infobox, radiobox ,senden von Präferenzen
     //
-    //Frage ->funktioniert mark/info anzeige FUnktion noch gleich, obwohl andere 3d gebäude nicht mehr drin?? 
     osmb.on("pointerup", e => {
         let marker = "";
 
@@ -179,7 +158,6 @@ async function geoJSONDAZU() {
         osmb.highlight(feature => {
             if (featureIdList.indexOf(feature.id) > -1 && feature.id != undefined) {
                 //soll marker über click-Event anzeigen
-
                 console.log(feature.id);
                 //Fall schon haus-id schon zwischengespeichert in array
                 //mit splice von anfang bis ende löschen
@@ -216,8 +194,9 @@ async function geoJSONDAZU() {
 
 
                 //Meineinfo=> namen von infobox gesamt
+                
                 meineInfo.style.visibility = "visible";
-                document.querySelector(".typus").textContent = "Art: " + feature.properties.Typ;
+                document.querySelector(".typus").textContent = `Art: ${feature.properties.Typ}`;
                 document.querySelector(".zusatz").textContent = feature.properties.Zusatz;
 
 
@@ -230,9 +209,9 @@ async function geoJSONDAZU() {
                         document.querySelector('.meinForm').test[i].disabled = false;
                     };
                     document.querySelector('.meinForm').dropdown.disabled = false;
-                    document.querySelector('.InputField').disabled = false;
-                    document.querySelector('.buttonEins').disabled = false;
 
+                    disableElement('.InputField', false);
+                    disableElement('.buttonEins', false);
                 };
 
                 //filter -> wenn id im prüfarray gefunden 
@@ -247,10 +226,8 @@ async function geoJSONDAZU() {
                         document.querySelector('.meinForm').test[i].disabled = true;
                     };
                     document.querySelector('.meinForm').dropdown.disabled = true;
-                    document.querySelector('.InputField').disabled = true;
-                    document.querySelector('.buttonEins').disabled = true;
-
-
+                    disableElement('.InputField', false);
+                    disableElement('.buttonEins', false);
                 }
 
                 return "#fdff00";
@@ -261,15 +238,15 @@ async function geoJSONDAZU() {
     });
 };
 
-let myID;
-let myFeature;
+//Für nächste FUnktion
+let myID, myFeature;
 
 let buttonEins = document.querySelector(".buttonEins");
 let meinForm = document.querySelector(".meinForm");
 let inputField = document.querySelector(".InputField");
 
 
-//   Erst auf Button click ausgelöst
+//Erst auf Button click ausgelöst
 //Funktion für Absenden von ausgefülltem Form
 //Sendet Post-Request
 //Funktion "feedbackButtons"-> checkt zustände der Form-Felder
@@ -309,14 +286,12 @@ function FeedbackDone() {
         };
         meinForm.dropdown.disabled = "false";
         meinForm.suggestion_text.disabled = "false";
-        // oder
-        //document.querySelector('.InputField').disabled=true;
     }
 }
 
 
-
-//wichtig ------
+// ---- 
+//------wichtig ------
 //Fügt Geojson aller LAyer hinzu funktion
 window.onload = function () {
     geoJSONDAZU();
@@ -332,21 +307,15 @@ async function feedbackButtons(x, z, q, g) {
 
     //hier soll  LAT / LON Kootdninate von aktivem
     // haus nach click auf button abgesendet werden
-    let meinLat = x.properties.bounds.min[1];
-    let meinLon = x.properties.bounds.min[0];
-    let meineID = x.id;
-    let radioWahl = z;
-    let textfeld = q;
-    let dropWahl = g;
     //speichert aktuellen hausstandort, könnte noch ID mitnehmen!!
     //Objekt, das weitergereicht wird
     const data = {
-        'latitude': meinLat,
-        'longitude': meinLon,
-        'haus_ID': meineID,
-        'radiobutton': radioWahl,
-        'freitext': textfeld,
-        'dropdown': dropWahl
+        'latitude': x.properties.bounds.min[1],
+        'longitude': x.properties.bounds.min[0],
+        'haus_ID': x.id,
+        'radiobutton': z,
+        'freitext': q,
+        'dropdown': g
     };
     //Methode der Sendung an Server
     const options = {
@@ -365,7 +334,7 @@ async function feedbackButtons(x, z, q, g) {
     const response = await fetch("/add", options);
     const json = await response.json();
 
-}
+};
 
 
 //Funktion prüft, welche Radiobutton in Form ausgewählt wurden
@@ -388,34 +357,30 @@ function formCheck() {
     return dropZustand;
 };
 
-
-
-
-
 //einfach id bei features id von alles 3d VOR properties
-
 //Fügt geojson von Gebäuden hinzu, fügt Marker für gefilterte Standorte hinzu
-async function machES() {
+async function addBuildingsGEOJSON() {
     let alles3d;
     const response3d = await fetch("../json/buildings_geojson_stand_25_05.geojson");
     alles3d = await response3d.json();
     console.log(alles3d.features.length);
-    for (i = 0; i <= alles3d.features.length - 1; i++) {
+    for (let i = 0; i <= alles3d.features.length - 1; i++) {
         if (alles3d.features[i].properties.id != undefined) {
             alles3d.features[i].id = alles3d.features[i].properties.id.toString();
 
         }
         //Gebäude Höhe --> levels gibt fenster look
         if (alles3d.features[i].properties.name == "IV") {
-            alles3d.features[i].properties.levels = 4;
+            alles3d.features[i].properties.levels =4;
 
         } else if (alles3d.features[i].properties.name == "III") {
-            alles3d.features[i].properties.levels = 3;
+            alles3d.features[i].properties.levels =3;
 
         } else if (alles3d.features[i].properties.name == "II") {
-            alles3d.features[i].properties.levels = 2;
+            alles3d.features[i].properties.levels =2;
+
         } else if (alles3d.features[i].properties.height == 12) {
-            alles3d.features[i].properties.levels = 4;
+            alles3d.features[i].properties.levels =1;
         }
 
         //Fassaden und Dach-Styling
@@ -427,8 +392,7 @@ async function machES() {
 
         //Hinzufügen von Farben für Flächen in Geojson-File
         if(alles3d.features[i].properties.Typ =="wiese"){
-            alles3d.features[i].properties.roofColor = "#c1d898";
-        }
+            alles3d.features[i].properties.roofColor ="#c1d898";        }
         if(alles3d.features[i].properties.Typ =="spielplatz"){
             alles3d.features[i].properties.roofColor ="#f6d7b0";
         }
@@ -437,8 +401,8 @@ async function machES() {
         }
         if(alles3d.features[i].properties.Typ =="bruecke"){
             alles3d.features[i].properties.roofColor ="#5C3317";
-            alles3d.features[i].properties.height = 2;
-            alles3d.features[i].properties.levels = "";
+            alles3d.features[i].properties.height =2;
+            alles3d.features[i].properties.levels ="";
         }
         if(alles3d.features[i].properties.Typ =="fluss"){
             alles3d.features[i].properties.roofColor ="#007d9a";
@@ -460,13 +424,8 @@ async function machES() {
     // let kitaSTANDORTE = [];
     let meinKEY = Object.keys(alles3d.features);
 
-    let kitaSTANDORTE = [];
-    let laeden = [];
-    let schulen = [];
-    let gastro = [];
-    let spielplatz = [];
-    let sport = [];
-    let parkplatz = [];
+    let kitaSTANDORTE = [], laeden = [], schulen = [], gastro = [], 
+    spielplatz = [], sport = [], parkplatz = [];
 
     //Suchen nach Standorten in geojson --> speichern in Arrays
     for (let key of meinKEY) {
@@ -490,9 +449,6 @@ async function machES() {
         }
     };
 
-
-
-
     //Hinzufügen von Gebäude-layer 
     osmb.addGeoJSON(alles3d);
 
@@ -506,83 +462,33 @@ async function machES() {
 };
 
 
-//
-//EVENTLISTENER für Auswahlbutton
-//Eventlistener für KITA-hervorhebung  
-const kitaBUTTON = document.querySelector(".kita");
-kitaBUTTON.addEventListener("click", function () {
-    if (meineORTE.length > 0) {
-        //nimmt bestimmte orte, weißt farbe und marker zu 
-        markerDAZU(meineORTE[0], meineFARBEN.kitas, kitaBUTTON);
-    };
-});
+///benennt buttons für Legende
+let kitaBUTTON, ladenBUTTON, schulenBUTTON, gastroButton, spielPlButton, sportButton, parkPLButton;
+const myButtons ={kitaBUTTON, ladenBUTTON, schulenBUTTON, gastroButton, spielPlButton, sportButton, parkPLButton};
 
-
-//Event_listener für läden
-//Eventlistener für KITA-hervorhebung  
-const ladenBUTTON = document.querySelector(".laden");
-ladenBUTTON.addEventListener("click", function () {
-    if (meineORTE.length > 0) {
-        //nimmt bestimmte orte, weißt farbe und marker zu
-        markerDAZU(meineORTE[1], meineFARBEN.laden, ladenBUTTON);
-    };
-});
-
-
-//Für Schulen
-const schulenBUTTON = document.querySelector(".schulen");
-schulenBUTTON.addEventListener("click", function () {
-    if (meineORTE.length > 0) {
-        //nimmt bestimmte orte und  zugews. farbe
-        markerDAZU(meineORTE[2], meineFARBEN.schulen, schulenBUTTON);
-    };
-});
-
-//Für Gastro
-const gastroButton = document.querySelector(".gastro");
-gastroButton.addEventListener("click", function () {
-    if (meineORTE.length > 0) {
-        //nimmt bestimmte orte und  zugews. farbe
-        markerDAZU(meineORTE[3], meineFARBEN.gastro, gastroButton);
-    };
-});
-
-
-//Für Spielplaetze
-const spielPlButton = document.querySelector(".spielplatz");
-spielPlButton.addEventListener("click", function () {
-    if (meineORTE.length > 0) {
-        //nimmt bestimmte orte und  zugews. farbe
-        markerDAZU(meineORTE[4], meineFARBEN.spielplatz, spielPlButton);
-    };
-});
-
-//Für Sport
-const sportButton = document.querySelector(".sport");
-sportButton.addEventListener("click", function () {
-    if (meineORTE.length > 0) {
-        //nimmt bestimmte orte und  zugews. farbe
-        markerDAZU(meineORTE[5], meineFARBEN.sport, sportButton);
-    };
-});
-
-
-//Für Parkplatz
-const parkPlButton = document.querySelector(".parkplatz");
-parkPlButton.addEventListener("click", function () {
-    if (meineORTE.length > 0) {
-        //nimmt bestimmte orte und  zugews. farbe
-        markerDAZU(meineORTE[6], meineFARBEN.parkplatz, parkPlButton);
-    };
-});
-
+//Funktion für hinzufügen von eventlistener für Legende 
+const addButton = function (buttonName, classname, number, color) {
+     buttonName = document.querySelector(classname);
+    buttonName.addEventListener("click", function() {
+        if(meineORTE.length >0) {
+            markerDAZU(meineORTE[number], color, buttonName)
+        }
+    })
+}
+//Einzelnen Orte wie Kitas, Schulen usw. -> zuweisen eventlistener und Marker
+addButton(myButtons.kitaBUTTON, ".kita", 0, meineFARBEN.kitas);
+addButton(myButtons.ladenBUTTON, ".laden", 1, meineFARBEN.laden);
+addButton(myButtons.schulenBUTTON, ".schulen", 2, meineFARBEN.schulen);
+addButton(myButtons.schulenBUTTON, ".gastro", 3, meineFARBEN.gastro);
+addButton(myButtons.spielPlButton, ".spielplatz", 4, meineFARBEN.spielplatz);
+addButton(myButtons.sportButton, ".sport", 5, meineFARBEN.sport);
+addButton(myButtons.parkPLButton, ".parkplatz", 6, meineFARBEN.parkplatz);
 
 //Aktion um Info-Fenster zu schließen
 const closeButton = document.querySelector(".close");
 closeButton.addEventListener("click", function() {
         document.querySelector(".meineInfo").style.visibility = "hidden";
 });
-
 
 
 // Hinzufügen
@@ -629,7 +535,6 @@ function markerDAZU(x, y, z) {
         return;
     };
 
-
 };
 
 
@@ -661,33 +566,34 @@ function requestIT() {
 };
 
 
+function checkVariable(x) {
+    console.log(x);
+    if (x != null)
+        //loopt durch json-antwort und pusht ids in array
+        //wieder leeren (gegen dopplungen)
+        feedbackHouses = [];
+    for (i = 0; i <= x.length - 1; i++) {
+        feedbackHouses.push(x[i].haus_ID)
+    };
+
+    //Standorte, für die Einträge bei ID vorliegen
+    //Funktion fügt marker hinzu
+    console.log(feedbackHouses);
+    markerDAZU(feedbackHouses, meineFARBEN.feedback, feedbackMarkers)
+}
+
+
+
 //für feedback marker dazu
 let feedbackHouses = [];
 const feedbackMarkers = document.querySelector(".feedbacks")
 feedbackMarkers.addEventListener("click", function () {
 
     // erstmal nur get request mit json daten von Kommentaren
-    requestIT()
-
-    function checkVariable() {
-        console.log(myJSONRes);
-        if (myJSONRes != null)
-            //loopt durch json-antwort und pusht ids in array
-            //wieder leeren (gegen dopplungen)
-            feedbackHouses = [];
-        for (i = 0; i <= myJSONRes.length - 1; i++) {
-            feedbackHouses.push(myJSONRes[i].haus_ID)
-        };
-
-        //Standorte, für die Einträge bei ID vorliegen
-        //Funktion fügt marker hinzu
-        console.log(feedbackHouses);
-        markerDAZU(feedbackHouses, meineFARBEN.feedback, feedbackMarkers)
-    }
-
+    requestIT();
 
     //checkt alle 500 milis, ob Serverantwort erhalten. bei ja-> funktion
-    setTimeout(checkVariable, 500);
+    setTimeout(checkVariable(myJSONRes), 500);
 
 });
 
@@ -767,8 +673,6 @@ function commentChecker() {
                     this.disabled=true;
                 } );
 
-
-
                 //wenn nach mehrmals infobox wegclicken ul verschindet
                 if (document.querySelector(".feedback-list") === null) {
                     let newUL = document.createElement("ul");
@@ -785,9 +689,6 @@ function commentChecker() {
                 // return exits
             }
 
-
-
-
         }
         if (!exits || exits == undefined) {
             let keinKommentar = "Es ist noch kein Kommentar vorhanden 😅";
@@ -797,8 +698,6 @@ function commentChecker() {
     }
 
 }
-
-
 
 
 //Funktion für Löschen von allen "li" Elementen, wenn Infobox geschlossen wird
@@ -862,9 +761,6 @@ async function like_dislike_post(x, z) {
 }
 
 
-
-
-
 //Zufallsfarben für Dach ((nicht ganz bunt))
 //ggf. anpassen
 function dachFARBEN() {
@@ -882,25 +778,6 @@ function dachFARBEN() {
 }
 
 
-//andere Farbkombi ggf Suchen
-// let daCH = [
-//     "#6d727c",
-//     "#928d83",
-//     "#8b8b8b",
-//     "#f08060",
-//     "#8f406c",
-//     "#b15187",
-//     "#8bc67d",
-//     "#6C392B"
-// ]
-
-
-
-
-
-
-
-
 //für style von fassade
 function fassadenFARBE() {
 
@@ -913,16 +790,6 @@ function fassadenFARBE() {
     return fassade[Math.floor(Math.random() * fassade.length)];
 
 }
-
-
-
-// nur für syntax
-// let dachfarbe = dachFARBEN();
-// let fassFarbe = fassadenFARBE();
-// DreiD.features[0].properties.roofColor = dachfarbe;
-// DreiD.features[0].properties.roofColor = fassFarbe;
-
-
 
 //
 /// Schatten und Tageszeit in Karte
@@ -991,81 +858,3 @@ dateRange.addEventListener('input', onDateChange);
 
 document.getElementById("date").style.display = "none";
 
-
-
-// oben für Schatten und Tag
-
-
-
-
-//Styles für Layer ----------------
-//Style für Foundation
-function styleFoundation(feature) {
-    return {
-        weight: 2,
-        opacity: 1,
-        color: 'black',
-        fillColor: '#ece8dc',
-        fillOpacity: 0.99,
-        zIndex: -10000
-    };
-
-}
-
-
-function styledreiD(feature) {
-    return {
-        weight: 2,
-        opacity: 1,
-        color: 'blue',
-        fillColor: '#ece8dc',
-        fillOpacity: 0.99,
-        zIndex: 10
-    };
-
-}
-
-
-
-
-function styleGebaeude(feature) {
-    return {
-        weight: 2,
-        opacity: 1,
-        color: '#666359',
-        fillColor: '#d9d1ba',
-        //Füllt Gebauede Farbe rein
-        fillOpacity: 0.7,
-        zIndex: 3
-    };
-
-}
-
-
-function styleStreets(feature) {
-    return {
-        weight: 6,
-        opacity: 0.7,
-        fill: false,
-        fillRule: "nonzero",
-        color: '#f9f7f3',
-        fillColor: '#f9f7f3',
-        //Füllt Gebauede Farbe rein
-        fillOpacity: 0.6,
-        zIndex: 0
-    };
-
-}
-
-function styleSchrift(feature) {
-    return {
-        weight: 2,
-        opacity: 1,
-        color: '#252421',
-        fillColor: 'green',
-        //Füllt Gebauede Farbe rein
-        fillOpacity: 1,
-        zIndex: 4
-    };
-
-}
