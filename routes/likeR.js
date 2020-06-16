@@ -17,8 +17,6 @@ router.post("/", async function (request, response, next) {
 
     let MEINEid =  request.body.gesendete_ID;
 
-    console.log (request.body.gesendete_ID);
-
     console.log("Update Req angekommen");
 
     const errors = validationResult(request);

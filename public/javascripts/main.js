@@ -107,7 +107,8 @@ async function geoJSONDAZU() {
         effects: ['shadows'],
         showBackfaces: false,
         disabled: false,
-        attribution: '© 3D <a href="https://osmbuildings.org/copyright/">OSM Buildings</a>'
+        attribution: `© 3D <a href="https://osmbuildings.org/copyright/">OSM Buildings</a>
+        --<a href="https://github.com/curryforce/-DeinDietenbach">GitHub curryforce</a>`
     });
 
 

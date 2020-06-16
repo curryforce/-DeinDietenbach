@@ -10,8 +10,6 @@ let formInstance = require('../models/feedbackForm');
 //localhost:3000/discuss/  oder?
 router.get("/", function (request, response, next) {
 
-    console.log("Schinkeeeen")
-
     //Auswahl von freitext u. latitude und longitude haus_ID und transformiertem Datum
     // beiden letzteren -> später marker hinzufügen / TextFeld in Boxseite
     //muss date & date_transformed haben-> für transformierung von virtual
