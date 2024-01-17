@@ -113,7 +113,7 @@ async function geoJSONDAZU() {
 
 
     osmb.addMapTiles(
-        'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=6aRyUJLkA6sK2ccxVEly', {
+        'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key={key}, {
             attribution: '© Data <a href="http://openstreetmap.org/copyright/">OpenStreetMap</a> · © Map <a href="http://mapbox.com">Mapbox</a>'
         }
     );
